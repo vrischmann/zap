@@ -23,7 +23,10 @@
 // package's zero-allocation formatters.
 package buffer // import "go.uber.org/zap/buffer"
 
-import "strconv"
+import (
+	"strconv"
+	"time"
+)
 
 const _size = 1024 // by default, create 1 KiB buffers
 
@@ -64,6 +67,10 @@ func (b *Buffer) AppendBool(v bool) {
 // or +/- Inf.
 func (b *Buffer) AppendFloat(f float64, bitSize int) {
 	b.bs = strconv.AppendFloat(b.bs, f, 'f', -1, bitSize)
+}
+
+func (b *Buffer) AppendTime(t time.Time, layout string) {
+	b.bs = t.AppendFormat(b.bs, layout)
 }
 
 // Len returns the length of the underlying byte slice.
